@@ -1,12 +1,13 @@
 #RPS sim
 from random import *
-WIDTH = 600
+import math
+WIDTH = 700
 HEIGHT = 800
 #every bug check all mentions of scissors
 rocks = []
 papers = []
 scissors = []
-quantity = 20
+quantity = 5
 
 def draw():
     screen.clear()
@@ -22,14 +23,16 @@ def draw():
 
 def update():
     for rock in rocks:
-        win = 999
+        win = 99999999999
         winner = ''
         for scissor in scissors:
             a = dis(rock,scissor)
+            r = angle(rock,scissor)
             if a < win:
                 win = a
                 winner = scissor
-        rock.
+                rock.rad = r
+        move(rock, 1)
         for paper in papers:
             if rock.colliderect(paper):
                 rock.image = 'paper'
@@ -52,19 +55,53 @@ def update():
                 rocks.append(scissor)
                 break
 
+'''
+def move_forward(self, dist):
+    angle = math.radians(self.angle)
+    dx = dist * math.cos(angle)
+    dy = dist * math.sin(angle)
+    self.x += dx
+    self.y -= dy
+'''
 def dis(actor1,actor2):
     a = actor1.x - actor2.x
     b = actor1.y - actor2.y
 
     c = (a**2+b**2)**.5
     return c
+'''
 def ratio(actor1,actor2):
     a = actor1.x - actor2.x
     b = actor1.y - actor2.y
-
+    if abs(b) < 1:
+        b = 1
     c = a/b
     return c
-#finish the ratio x = c y = 1
+'''
+def move(actor, dist):
+    angle = actor.rad
+    x = dist * math.cos(angle)
+    y = dist * math.sin(angle)
+    actor.x += x
+    actor.y -= y
+
+# 0 degrees equals up -y axis
+def angle(actor1,actor2):
+    adj = actor1.x - actor2.x
+    op = actor1.y - actor2.y
+    if adj == 0:
+        if op < 0:
+            rad = math.pi
+        if op >= 0:
+            rad = 0
+    else:
+        rad = math.atan(op/adj)
+        if adj < 0:
+            rad += math.pi
+    print(rad)
+    return rad
+
+
 
 def start():
     for i in range(quantity):
