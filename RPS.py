@@ -4,8 +4,6 @@ import math
 WIDTH = 700
 HEIGHT = 800
 #every bug check all mentions of scissors
-#finish spacebar cooldown
-#Win count ROCKS FOR THE WIN
 rocks = []
 papers = []
 scissors = []
@@ -40,16 +38,45 @@ def draw():
             scissor.draw()
 
 def update():
-    global rocks,papers,scissors,loading
-    if keyboard.space and not loading:
+    global rocks,papers,scissors,loading,cooldown,rwin,pwin,swin,speed
+    if keyboard.space and not loading and not cooldown:
         rocks = []
         papers = []
         scissors = []
         loading = True
+        cooldown=True
+        clock.schedule_unique(cooldowned,.2)
         return
-    if keyboard.space and loading:
+    if keyboard.space and loading and not cooldown:
         loading=False
+        cooldown=True
+        clock.schedule_unique(cooldowned,.2)
         start()
+    if keyboard.up and loading:
+        speed += .05
+    if keyboard.down and loading:
+        speed -= .05
+    if speed > 3.5:
+        speed = 3.5
+    if speed < 0.05:
+        speed = 0.05
+    if not loading:
+        if len(rocks) == 0 and len(papers) == 0 and len(scissors) > 0:
+            swin += 1
+            loading = True
+            scissors = []
+            return
+        if len(rocks) == 0 and len(scissors) == 0 and len(papers) > 0:
+            pwin += 1
+            loading = True
+            papers = []
+            return
+        if len(papers) == 0 and len(scissors) == 0 and len(rocks) > 0:
+            rwin += 1
+            loading = True
+            rocks = []
+            return
+
 
     for rock in rocks:
         win = 99999999999
@@ -181,5 +208,3 @@ def start():
         rocks.append(rock)
         papers.append(paper)
         scissors.append(scissor)
-
-start()
