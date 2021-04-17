@@ -4,6 +4,10 @@ import math
 WIDTH = 700
 HEIGHT = 800
 #every bug check all mentions of scissors
+#3 list give advantageos to whoever checks last
+#toggleable once and reapeat
+#number of repeats
+#timer for ties
 rocks = []
 papers = []
 scissors = []
@@ -63,18 +67,21 @@ def update():
     if not loading:
         if len(rocks) == 0 and len(papers) == 0 and len(scissors) > 0:
             swin += 1
-            loading = True
+            #loading = True
             scissors = []
+            start()
             return
         if len(rocks) == 0 and len(scissors) == 0 and len(papers) > 0:
             pwin += 1
-            loading = True
+            #loading = True
             papers = []
+            start()
             return
         if len(papers) == 0 and len(scissors) == 0 and len(rocks) > 0:
             rwin += 1
-            loading = True
+            #loading = True
             rocks = []
+            start()
             return
 
 
